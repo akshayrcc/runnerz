@@ -23,8 +23,8 @@ public class RunnerzApplication {
 
         //some bean testing
         var welcomeMessage = context.getBean(WelcomeMessage.class);
-        System.out.println("Added bean is: " + welcomeMessage);
-        System.out.println(welcomeMessage.getWelcomeMessage());
+        logger.info("Added bean is: " + welcomeMessage);
+        logger.info(welcomeMessage.getWelcomeMessage());
 
 
 //        logger.info("RunnerzApplication stopped!");
