@@ -1,13 +1,13 @@
 package com.akshayram.runnerz.run;
 
 import com.akshayram.runnerz.RunnerzApplication;
+import jakarta.validation.Valid;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -16,55 +16,48 @@ public class RunController {
 
     private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RunnerzApplication.class);
 
-    private final RunRepository runRepository;
+    private final RunService runService;
 
-    RunController(RunRepository runRepository) {
-        this.runRepository = runRepository;
-        logger.info("RunController created!");
+    RunController(RunService runService) {
+        this.runService = runService;
+        logger.info("RunService injected!");
     }
 
-    @GetMapping("/")
+    @GetMapping
     List<Run> getAllRuns() {
         logger.info("RunController.getAllRuns() called");
-        return runRepository.findAll();
+        return runService.getAllRuns();
     }
 
     @GetMapping("/{id}")
-    Run getRunById(@PathVariable int id) throws RunNotFoundException {
+    ResponseEntity<Run> getRunById(@PathVariable int id) throws RunNotFoundException {
         logger.info("RunController.getRunById() called");
-        Optional<Run> run = runRepository.findById(id);
-        if (run.isEmpty()) {
-            //throw new RunNotFoundException("Run with id " + id + " not found");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Run with id " + id + " not found");
-        }
-        return run.get();
+        Run r = runService.getRun(id);
+        return ResponseEntity.ok(r);
     }
 
     //post
-    @PostMapping("/")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    void addRun(@RequestBody Run run) {
+    ResponseEntity<Run> addRun(@Valid @RequestBody Run run) {
         logger.info("RunController.addRun() called");
-        runRepository.add(run);
+        runService.createRun(run);
+        return ResponseEntity.status(HttpStatus.CREATED).body(run);
     }
 
     //put
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void updateRun(@RequestBody Run run, @PathVariable Integer id) {
+    void updateRun(@Valid @RequestBody Run run, @PathVariable Integer id) {
         logger.info("RunController.updateRun() called");
-        runRepository.update(run, id);
+        runService.updateRun(run, id);
     }
 
     //delete
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    void deleteRun(@PathVariable int id) {
+    void deleteRun(@PathVariable Integer id) {
         logger.info("RunController.deleteRun() called");
-        Optional<Run> run = runRepository.findById(id);
-        if (run.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Run with id " + id + " not found");
-        }
-        runRepository.delete(run.get().id());
+        runService.deleteRun(id);
     }
 }

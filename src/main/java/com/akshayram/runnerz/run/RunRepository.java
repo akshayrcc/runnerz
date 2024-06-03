@@ -34,14 +34,12 @@ public class RunRepository {
 
     void update(Run run, Integer id) {
         Optional<Run> runOptional = findById(id);
-        if (runOptional.isPresent()) {
-            runs.set(runs.indexOf(runOptional.get()), run);
-        }
-
+        runOptional.ifPresent(value -> runs.set(runs.indexOf(value), run));
     }
 
     public void delete(Integer id) {
-        Optional<Run> runOptional = findById(id);
-        runOptional.ifPresent(runs::remove);
+//        Optional<Run> runOptional = findById(id);
+//        runOptional.ifPresent(runs::remove);
+        runs.removeIf(r -> r.id().equals(id));
     }
 }
