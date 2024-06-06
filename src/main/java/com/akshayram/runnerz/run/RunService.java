@@ -8,9 +8,9 @@ import java.util.Optional;
 @Service
 public class RunService {
 
-    private final RunRepository runRepository;
+    private final LocalRunRepository runRepository;
 
-    public RunService(RunRepository runRepository) {
+    public RunService(LocalRunRepository runRepository) {
         this.runRepository = runRepository;
     }
 
