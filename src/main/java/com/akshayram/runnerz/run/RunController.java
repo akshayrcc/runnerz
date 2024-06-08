@@ -23,7 +23,8 @@ public class RunController {
         logger.info("RunService injected!");
     }
 
-    @GetMapping
+//    @GetMapping
+    @RequestMapping( method = RequestMethod.GET)
     List<Run> getAllRuns() {
         logger.info("RunController.getAllRuns() called");
         return runService.getAllRuns();

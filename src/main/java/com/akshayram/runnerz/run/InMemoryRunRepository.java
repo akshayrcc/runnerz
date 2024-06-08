@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,12 +22,11 @@ class InMemoryRunRepository implements RunRepository {
     }
 
     public Optional<Run> findById(Integer id) {
-        return Optional.ofNullable(runs.stream().filter(run -> run.id() == id).findFirst().orElseThrow(RunNotFoundException::new));
+        return Optional.of(runs.stream().filter(run -> Objects.equals(run.id(), id)).findFirst().orElseThrow());
     }
 
     public void create(Run run) {
-        Run newRun = new Run(run.id(), run.title(), run.startedOn(), run.completedOn(), run.miles(), run.location());
-
+        Run newRun = new Run(run.id(), run.title(), run.status(), run.startedOn(), run.miles(), run.completedOn(), run.location());
         runs.add(newRun);
     }
 
@@ -36,7 +34,7 @@ class InMemoryRunRepository implements RunRepository {
         Optional<Run> existingRun = findById(id);
         if (existingRun.isPresent()) {
             var r = existingRun.get();
-            log.info("Updating Existing Run: " + existingRun.get());
+            log.info("Updating Existing Run: {}", existingRun.get());
             runs.set(runs.indexOf(r), newRun);
         }
     }

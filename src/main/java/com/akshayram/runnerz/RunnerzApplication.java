@@ -1,16 +1,15 @@
 package com.akshayram.runnerz;
 
-import com.akshayram.runnerz.run.Location;
-import com.akshayram.runnerz.run.Run;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @SpringBootApplication
 public class RunnerzApplication {
@@ -32,13 +31,25 @@ public class RunnerzApplication {
 
     }
 
+//    @Bean
+//    CommandLineRunner runner() {
+//        return args -> {
+//            logger.info("Command Line Runner!");
+//            Run run = new Run(1, "Morning Run", "COMPLETED", LocalDateTime.now(), 5, LocalDateTime.now().plus(1, java.time.temporal.ChronoUnit.HOURS), Location.OUTDOOR);
+//            logger.info("The run details:" + run);
+//            ;
+//        };
+//    }
+
     @Bean
-    CommandLineRunner runner() {
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
-            logger.info("Command Line Runner!");
-            Run run = new Run(1, "Morning Run", "COMPLETED", LocalDateTime.now(), 5, LocalDateTime.now().plus(1, java.time.temporal.ChronoUnit.HOURS), Location.OUTDOOR);
-            logger.info("The run details:" + run);
-            ;
+            System.out.println("Let's inspect the beans provided by Spring Boot:");
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                System.out.println(beanName);
+            }
         };
     }
 }
