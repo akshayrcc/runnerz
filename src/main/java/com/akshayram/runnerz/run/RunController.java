@@ -23,8 +23,8 @@ public class RunController {
         logger.info("RunService injected!");
     }
 
-//    @GetMapping
-    @RequestMapping( method = RequestMethod.GET)
+    //@GetMapping
+    @RequestMapping(method = RequestMethod.GET)
     List<Run> getAllRuns() {
         logger.info("RunController.getAllRuns() called");
         return runService.getAllRuns();
@@ -60,5 +60,10 @@ public class RunController {
     void deleteRun(@PathVariable Integer id) {
         logger.info("RunController.deleteRun() called");
         runService.deleteRun(id);
+    }
+
+    List<Run> findByLocation(@RequestParam String location) {
+        logger.info("RunController.findByLocation() called");
+        return runService.findByLocation(location);
     }
 }

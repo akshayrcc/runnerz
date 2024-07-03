@@ -42,4 +42,8 @@ public class RunService {
         }
         runRepository.delete(id);
     }
+
+    List<Run> findByLocation(String location) {
+        return runRepository.findByLocation(location);
+    }
 }

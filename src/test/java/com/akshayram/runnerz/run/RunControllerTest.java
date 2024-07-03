@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -65,5 +66,16 @@ class RunControllerTest {
         runController.deleteRun(1);
 
         verify(runService, times(1)).deleteRun(1);
+    }
+
+    @Test
+    void testFindByLocation() {
+        Run run = new Run(1, "Test Run", "Active", LocalDateTime.now(), 5, LocalDateTime.now().plusHours(1), Location.OUTDOOR);
+        when(runService.findByLocation("OUTDOOR")).thenReturn(List.of(run));
+
+        List<Run> response = runController.findByLocation("OUTDOOR");
+
+        assertEquals(1, response.size());
+        assertEquals(run, response.getFirst());
     }
 }

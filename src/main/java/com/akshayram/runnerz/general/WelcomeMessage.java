@@ -1,4 +1,4 @@
-package com.akshayram.runnerz;
+package com.akshayram.runnerz.general;
 
 import org.springframework.stereotype.Component;
 

@@ -1,15 +1,16 @@
 package com.akshayram.runnerz;
 
+import com.akshayram.runnerz.address.UserHttpClient;
+import com.akshayram.runnerz.general.WelcomeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-
-import java.util.Arrays;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.support.RestClientAdapter;
+import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @SpringBootApplication
 public class RunnerzApplication {
@@ -25,10 +26,16 @@ public class RunnerzApplication {
         logger.info("Added bean is: " + welcomeMessage);
         logger.info(welcomeMessage.getWelcomeMessage());
 
-
 //        logger.info("RunnerzApplication stopped!");
 //        context.close();
 
+    }
+
+    @Bean
+    UserHttpClient userHttpClient() {
+        RestClient restClient = RestClient.create("https://jsonplaceholder.typicode.com/");
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(RestClientAdapter.create(restClient)).build();
+        return factory.createClient(UserHttpClient.class);
     }
 
 //    @Bean
@@ -41,15 +48,15 @@ public class RunnerzApplication {
 //        };
 //    }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-        };
-    }
+//    @Bean
+//    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+//        return args -> {
+//            System.out.println("Let's inspect the beans provided by Spring Boot:");
+//            String[] beanNames = ctx.getBeanDefinitionNames();
+//            Arrays.sort(beanNames);
+//            for (String beanName : beanNames) {
+//                System.out.println(beanName);
+//            }
+//        };
+//    }
 }

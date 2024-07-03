@@ -22,11 +22,20 @@ class InMemoryRunRepository implements RunRepository {
     }
 
     public Optional<Run> findById(Integer id) {
-        return Optional.of(runs.stream().filter(run -> Objects.equals(run.id(), id)).findFirst().orElseThrow());
+        return Optional.of(runs.stream()
+                .filter(run -> Objects.equals(run.id(), id))
+                .findFirst()
+                .orElseThrow());
     }
 
     public void create(Run run) {
-        Run newRun = new Run(run.id(), run.title(), run.status(), run.startedOn(), run.miles(), run.completedOn(), run.location());
+        Run newRun = new Run(run.id(),
+                run.title(),
+                run.status(),
+                run.startedOn(),
+                run.miles(),
+                run.completedOn(),
+                run.location());
         runs.add(newRun);
     }
 
@@ -53,9 +62,10 @@ class InMemoryRunRepository implements RunRepository {
     }
 
     public List<Run> findByLocation(String location) {
-        return runs.stream().filter(run -> Objects.equals(run.location(), location)).toList();
+        return runs.stream()
+                .filter(run -> Objects.equals(run.location(), location))
+                .toList();
     }
-
 
     @PostConstruct
     private void init() {

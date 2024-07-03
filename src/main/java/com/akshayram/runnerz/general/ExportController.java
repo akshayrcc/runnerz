@@ -1,4 +1,4 @@
-package com.akshayram.runnerz;
+package com.akshayram.runnerz.general;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
